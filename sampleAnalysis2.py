@@ -21,12 +21,7 @@ print("Generated 'galaxies' dictionary")
 #print(galaxies[sampleGalaxy].color)
 #print(galaxies[sampleGalaxy].agn)
 
-counts = agnCount(galaxies)
-print("Seyfert:", counts['Seyfert'])
-print("LINER:", counts['LINER'])
-print("Seyfert/LINER:", counts['Seyfert/LINER'])
-print("Composite:", counts['Composite'])
-print("Total:", counts['Total'])
+counts = agnCount(galaxies, printCounts=True)
 
 # We're only interested in galaxies with color >0. Figure out the others later
 galaxyList = list(galaxies.values())
@@ -38,10 +33,10 @@ for galaxy in galaxyList:
 	if galaxy.color >= 0:
 		color.append(galaxy.color)
 		Mr.append(galaxy.Mr)
-	else:
-		print("Removing object:", galaxy.objId)
-		elem += 1
-print("Removed %s objects" % (elem))
+#	else:
+#		print("Removing object:", galaxy.objId)
+#		elem += 1
+#print("Removed %s objects" % (elem))
 
 # Plot the remaining galaxies to make sure we're looking at the right shape
 plt.hist2d(color, Mr, bins=250, norm=LogNorm(), cmin=1, cmap=plt.cm.inferno)

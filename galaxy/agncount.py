@@ -1,11 +1,12 @@
 from galaxy.galaxy import galaxy
 
-def agnCount(galaxies):
+def agnCount(galaxies, printCounts=False):
 	r"""
 	Counts the total number of each type of AGN in a set of galaxies
 
 	Parameters
 		galaxies - Type: dict. A dictionary of galaxy objects
+		printCounts (optional) - Type: bool. Prints agn counts when set to True. Set to False by default
 
 	Returns
 		counts - Type: dict. A dictionary holding the number of each type of AGN
@@ -44,5 +45,12 @@ def agnCount(galaxies):
 			counts['Total'] += 1
 		else:
 			raise ValueError("Unexpected AGN value found. AGN values should be in range [0,4]. Got:", galaxy[key].agn, "from galaxy", key)
+
+	if printCounts:
+		print("Seyfert:", counts['Seyfert'])
+		print("LINER:", counts['LINER'])
+		print("Seyfert/LINER:", counts['Seyfert/LINER'])
+		print("Composite:", counts['Composite'])
+		print("Total:", counts['Total'])
 
 	return counts
