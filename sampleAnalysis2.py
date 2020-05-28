@@ -1,5 +1,6 @@
 from galaxy import galaxy
 from galaxy.datagen import dataGen
+from galaxy.agncount import agnCount
 import matplotlib.pyplot as plt
 
 # Grab the data to create our dictionary
@@ -8,16 +9,22 @@ sampleGalaxy = 1237645879578460271
 print("Generated 'galaxies' dictionary")
 
 # Debug checks. Feel free to comment/uncomment these as necessary
-print(galaxies[sampleGalaxy].objId)
-print(galaxies[sampleGalaxy].ra)
-print(galaxies[sampleGalaxy].dec)
-print(galaxies[sampleGalaxy].z)
-print(galaxies[sampleGalaxy].redshift)
-print(galaxies[sampleGalaxy].u)
-print(galaxies[sampleGalaxy].r)
-print(galaxies[sampleGalaxy].Mr)
-print(galaxies[sampleGalaxy].color)
-print(galaxies[sampleGalaxy].agn)
+#print(galaxies[sampleGalaxy].objId)
+#print(galaxies[sampleGalaxy].ra)
+#print(galaxies[sampleGalaxy].dec)
+#print(galaxies[sampleGalaxy].z)
+#print(galaxies[sampleGalaxy].redshift)
+#print(galaxies[sampleGalaxy].u)
+#print(galaxies[sampleGalaxy].r)
+#print(galaxies[sampleGalaxy].Mr)
+#print(galaxies[sampleGalaxy].color)
+#print(galaxies[sampleGalaxy].agn)
+
+counts = agnCount(galaxies)
+print("Seyfert:", counts['Seyfert'])
+print("LINER:", counts['LINER'])
+print("Seyfert/LINER:", counts['Seyfert/LINER'])
+print("Composite:", counts['Composite'])
 
 # We're only interested in galaxies with color >0. Figure out the others later
 galaxyList = list(galaxies.values())
@@ -28,14 +35,14 @@ for galaxy in galaxyList:
 	color.append(galaxy.color)
 	Mr.append(galaxy.Mr)
 
-elem = 0
+#elem = 0
 for i in color:
 	if i <= 0:
 		Mr.remove(Mr[color.index(i)])
 		color.remove(i)
-		print("Removed element")
-		elem += 1
-print(elem)
+#		print("Removed element")
+#		elem += 1
+#print(elem)
 
 # Plot the remaining galaxies to make sure we're looking at the right shape
 plt.plot(color, Mr, 'o')
