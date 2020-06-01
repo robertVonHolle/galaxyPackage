@@ -1,3 +1,5 @@
 bootcamp/
 galaxyData/
 *.png
+*.swp
+*.pyc
