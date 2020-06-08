@@ -5,7 +5,7 @@ class galaxy:
 	Relevant values for galaxies in the dataset
 	"""
 
-	def __init__(self, objId, ra, dec, z, redshift, u, r, Mr, color, agn):
+	def __init__(self, objId, ra, dec, z, redshift, u, r, Mr, color, agn, nearby):
 		self.objId = objId
 		self.ra = ra
 		self.dec = dec
@@ -16,6 +16,7 @@ class galaxy:
 		self.Mr = Mr
 		self.color = color
 		self.agn = agn
+		self.nearby = nearby
 
 	@property
 	def objId(self):
@@ -196,3 +197,19 @@ class galaxy:
 				self._agn = 0
 		else:
 			raise TypeError("Attribute 'agn' must be type str. Got: %s" % (type(value)))
+
+	@property
+	def nearby(self):
+		r"""
+		Type: int
+
+		Number of galaxies within 1 pc of the target galaxy
+		"""
+		return self._nearby
+
+	@nearby.setter
+	def nearby(self, value):
+		if isinstance(value, int):
+			self._nearby = value
+		else:
+			raise TypeError("Attribute 'nearby' must be type int. Got: %s" % (type(value)))

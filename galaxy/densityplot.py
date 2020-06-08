@@ -53,3 +53,4 @@ def densityPlot(galaxies, f, xlim=None, ylim=None):
 	plt.colorbar()
 	plt.savefig(f)
 	print("Created galaxy plot")
+	plt.clf()
