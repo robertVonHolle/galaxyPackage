@@ -15,8 +15,12 @@ def dataGen(f):
 	data = np.genfromtxt(f, dtype=None, delimiter=",", names=True, encoding=None)
 
 	galaxies = {}
-	for i in range(len(data['objID'])):
-		galaxies[int(data['objID'][i])] = galaxy(int(data['objID'][i]), data['ra'][i], data['dec'][i], data['z'][i], data['redshift'][i], data['modelMag_u'][i], data['modelMag_r'][i], 0., 0., data['bpt'][i], int(data['Column1'][i]))
+	if data.dtype.names[-1] == 'Column1':
+		for i in range(len(data['objID'])):
+			galaxies[int(data['objID'][i])] = galaxy(int(data['objID'][i]), data['ra'][i], data['dec'][i], data['z'][i], data['redshift'][i], data['modelMag_u'][i], data['modelMag_r'][i], 0., 0., data['bpt'][i], int(data['Column1'][i] - 1))
+	else:
+		for i in range(len(data['objID'])):
+			galaxies[int(data['objID'][i])] = galaxy(int(data['objID'][i]), data['ra'][i], data['dec'][i], data['z'][i], data['redshift'][i], data['modelMag_u'][i], data['modelMag_r'][i], 0., 0., data['bpt'][i])
 
 # Debug statements. Comment or uncomment as necessary
 #		galaxies[int(data['objID'][i])].color(0)

@@ -5,7 +5,7 @@ class galaxy:
 	Relevant values for galaxies in the dataset
 	"""
 
-	def __init__(self, objId, ra, dec, z, redshift, u, r, Mr, color, agn, nearby):
+	def __init__(self, objId, ra, dec, z, redshift, u, r, Mr, color, agn, nearby=0):
 		self.objId = objId
 		self.ra = ra
 		self.dec = dec
@@ -208,7 +208,7 @@ class galaxy:
 		return self._nearby
 
 	@nearby.setter
-	def nearby(self, value):
+	def nearby(self, value = 0):
 		if isinstance(value, int):
 			self._nearby = value
 		else:
