@@ -1,11 +1,12 @@
 from galaxy import galaxy
+from galaxy.isblue import isBlue
 
 def divideSample(galaxies, f):
 	r"""
 	Divides the sample of galaxies into red and blue populations
 	based on the u-r color divider
 
-	Parameter:
+	Parameters:
 		galaxies - Type: dict. A dictionary of all galaxies
 		f - Type: str. The name of the file the data was originally pulled from
 	
@@ -23,7 +24,7 @@ def divideSample(galaxies, f):
 
 	for key in galaxies:
 		Mr = galaxies[key].Mr
-		if galaxies[key].color < (-0.0178 * (Mr ** 2)) - (0.146 * Mr) + 2.294:
+		if isBlue(galaxies[key]):
 			galaxiesBlue[key] = galaxies[key]
 		else:
 			galaxiesRed[key] = galaxies[key]

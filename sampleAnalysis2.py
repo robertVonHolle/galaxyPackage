@@ -25,10 +25,10 @@ print("Generated 'galaxies' dictionary")
 
 # Divide into red and blue subsections
 divideSample(galaxies, 'galaxyData/galaxy_sample_2.csv')
-print("Created blue_file and red_file")
+#print("Created blue_file and red_file")
 
 # Count each type and total number of AGNs
-#counts = agnCount(galaxies, printCounts=True)
+counts = agnCount(galaxies, printCounts=True)
 
 # Plot the galaxies to make sure we're looking at the right shape
 #densityPlot(galaxies, 'plots/galaxy_sample_2_nolim_hist2d.png')

@@ -1,5 +1,8 @@
+findDiff.py
 bootcamp/
 galaxyData/
 *.png
 *.swp
 *.pyc
+*.txt
+*.csv
