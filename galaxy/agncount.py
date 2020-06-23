@@ -27,7 +27,8 @@ def agnCount(galaxies, printCounts=False):
 		'Composite'    : 0,
 		'Total'        : 0,
 		'None'         : 0}
-	
+
+	# Find counts of AGNs based on flags in galaxy objects
 	for key in galaxies:
 		if galaxies[key].agn == 0:
 			counts['None'] += 1
@@ -46,6 +47,7 @@ def agnCount(galaxies, printCounts=False):
 		else:
 			raise ValueError("Unexpected AGN value found. AGN values should be in range [0,4]. Got:", galaxy[key].agn, "from galaxy", key)
 
+	# Print the counts of AGNs if desired
 	if printCounts:
 		print("Seyfert:", counts['Seyfert'])
 		print("LINER:", counts['LINER'])

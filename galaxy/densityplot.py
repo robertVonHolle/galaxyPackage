@@ -21,11 +21,13 @@ def densityPlot(galaxies, f, xlim=None, ylim=None):
 	color = []
 	Mr = []
 
+	# Create lists to use for plotting
 	for galaxy in galaxyList:
 		if galaxy.u > errFlag:
 			color.append(galaxy.color)
 			Mr.append(galaxy.Mr)
 
+	# Create the 2d histogram
 	plt.hist2d(color, Mr, bins=250, norm=LogNorm(), cmin=1, cmap=plt.cm.inferno)
 	plt.gca().invert_yaxis()
 	plt.xlabel("u - r")

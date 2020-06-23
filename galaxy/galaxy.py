@@ -6,17 +6,18 @@ class galaxy:
 	"""
 
 	def __init__(self, objId, ra, dec, z, redshift, u, r, Mr, color, agn, nearby=0):
-		self.objId = objId
-		self.ra = ra
-		self.dec = dec
-		self.z = z
-		self.redshift = redshift
-		self.u = u
-		self.r = r
-		self.Mr = Mr
-		self.color = color
-		self.agn = agn
-		self.nearby = nearby
+		self.objId = objId  	  # Identification number of a galaxy
+		self.ra = ra			  # Right ascension of the galaxy in degrees
+		self.dec = dec			  # Declination of the galaxy in degrees
+		self.z = z				  # Redshift of the galaxy
+		self.redshift = redshift  # GANDALF-corrected redshift of the galaxy
+		self.u = u				  # u-band magnitude of the galaxy
+		self.r = r				  # r-band magnitude of the galaxy
+		self.Mr = Mr			  # Absolute magnitude of the galaxy
+		self.color = color		  # The "color" of the galaxy as denoted by u-r
+		self.agn = agn			  # A flag indicating the galaxy's classification based on AGN
+		self.nearby = nearby      # Number of galaxies "nearby" target galaxy
+								  # (definition of "nearby" changes between data sets)
 
 	@property
 	def objId(self):
@@ -203,7 +204,8 @@ class galaxy:
 		r"""
 		Type: int
 
-		Number of galaxies within 1 pc of the target galaxy
+		Number of galaxies "nearby" the target galaxy
+		(definition of "nearby" changes based on data set)
 		"""
 		return self._nearby
 

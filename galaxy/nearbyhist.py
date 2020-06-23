@@ -2,7 +2,7 @@ from galaxy import galaxy
 import matplotlib.pyplot as plt
 import math
 
-def nearbyHist(galaxies, f, dist, bins=10):
+def nearbyHist(galaxies, f, dist, bins=10, makeNearbyFile=False):
 	r"""
 	Creates a histogram of number of galaxies within a specified distance of
 	a target galaxy
@@ -13,24 +13,20 @@ def nearbyHist(galaxies, f, dist, bins=10):
 		dist - Type: float. The maximum distance in Mpc at which a galaxy is considered
 			"nearby" the target galaxy
 		bins (optional) - Type: int. The number of bins
+		makeNearbyFile (optional) - Type: bool. Creates file containing info on galaxies
+			with excessive neighbors if True
 
 	Returns:
 		None, but creates a histogram in the specified file
 	"""
+
 	# Constants
 	c = 3 * 10 ** 8
 	H0 = 73.8 * 1000
 
-	#numNearby = []
-	#for key in galaxiesBig:
-	#	numNearby.append(galaxiesBig[key].nearby)
-
 	# Since we are interested in the percentage of AGNs rather than the number of AGNs in
 	# each bin, we will need to implement a histogram by hand using matplotlib.pyplot.bar
 	# rather than simply using matplotlib.pyplot.hist
-
-	# Determine the size of each bin
-	#binSize = math.ceil((max(numNearby) - min(numNearby)) / bins)
 
 	# Determine the height of each bin
 	binsList = [0,1,2,3,4,5,6,7,8,9,10]
@@ -56,34 +52,46 @@ def nearbyHist(galaxies, f, dist, bins=10):
 
 	# Write galaxies with excessive numbers of neighbors to a file
 	# so I can check them later
-	badFile = open('tooManyGalaxies.txt', 'w')
-	badFile.write("These galaxies have too many neighbors:\n")
-	binsList.append(11)
-	redshifts = []
-	moreRedshifts = []
-	moreRedshiftKeys = []
-	for key in galaxies:
-		if galaxies[key].nearby >= 11:
-			redshifts.append(galaxies[key].z)
-			numTot += 1
-			badFile.write(str(key) + " " + str(galaxies[key].ra) + " " + str(galaxies[key].dec) + " " + str(galaxies[key].z) + " " + str(galaxies[key].nearby) + "\n")
-			if galaxies[key].agn != 0:
-				numAGN += 1
+	if makeNearbyFile:
+		badFile = open('tooManyGalaxies.txt', 'w')
+		badFile.write("These galaxies have too many neighbors:\n")
+		binsList.append(11)
+		redshifts = []
+		for key in galaxies:
+			if galaxies[key].nearby >= 11:
+				redshifts.append(galaxies[key].z)
+				numTot += 1
+				badFile.write(str(key) + " " + str(galaxies[key].ra) + " " + str(galaxies[key].dec) + " " + str(galaxies[key].z) + " " + str(galaxies[key].nearby) + "\n")
+				if galaxies[key].agn != 0:
+					numAGN += 1
+		if numTot != 0:
+			binHeights.append(numAGN / numTot)
+			errs.append(math.sqrt(numAGN) / numTot)
 		else:
-			moreRedshifts.append(galaxies[key].z)
-			moreRedshiftKeys.append(key)
-	if numTot != 0:
-		binHeights.append(numAGN / numTot)
-		errs.append(math.sqrt(numAGN) / numTot)
+			binHeights.append(0)
+			errs.append(0)
+		badFile.close()
+	# Create final bin even if makeNearbyFile is False
 	else:
-		binHeights.append(0)
-		errs.append(0)
-	badFile.close()
+		binsList.append(11)
+		for key in galaxies:
+			if galaxies[key].nearby >= 11:
+				numTot += 1
+				if galaxies[kye].agn != 0:
+					numAGN += 1
+		if numTot != 0:
+			binHeights.append(numAGN / numTot)
+			errs.append(math.sqrt(numAGN) / numTot)
+		else:
+			binHeights.append(0)
+			errs.append(0)
+
 	print("Bin 11 covers range 11+ and includes a total of %s target galaxies." % numTot)
 
 	print("Bin heights found")
-
-	print("Max redshift of galaxies with too many neighbors:", max(redshifts))
+	
+	if makeNearbyFile:
+		print("Max redshift of galaxies with too many neighbors:", max(redshifts))
 
 	# Plot the histogram
 	plt.bar(binsList, binHeights, yerr = errs)
