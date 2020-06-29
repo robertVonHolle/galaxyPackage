@@ -5,19 +5,20 @@ class galaxy:
 	Relevant values for galaxies in the dataset
 	"""
 
-	def __init__(self, objId, ra, dec, z, redshift, u, r, Mr, color, agn, nearby=0):
-		self.objId = objId  	  # Identification number of a galaxy
-		self.ra = ra			  # Right ascension of the galaxy in degrees
-		self.dec = dec			  # Declination of the galaxy in degrees
-		self.z = z				  # Redshift of the galaxy
-		self.redshift = redshift  # GANDALF-corrected redshift of the galaxy
-		self.u = u				  # u-band magnitude of the galaxy
-		self.r = r				  # r-band magnitude of the galaxy
-		self.Mr = Mr			  # Absolute magnitude of the galaxy
-		self.color = color		  # The "color" of the galaxy as denoted by u-r
-		self.agn = agn			  # A flag indicating the galaxy's classification based on AGN
-		self.nearby = nearby      # Number of galaxies "nearby" target galaxy
-								  # (definition of "nearby" changes between data sets)
+	def __init__(self, objId, ra, dec, z, redshift=0, u=0, r=0, Mr, color, agn, nearby=0, nearbyIDs=[]):
+		self.objId = objId  	    # Identification number of a galaxy
+		self.ra = ra			    # Right ascension of the galaxy in degrees
+		self.dec = dec			    # Declination of the galaxy in degrees
+		self.z = z				    # Redshift of the galaxy
+		self.redshift = redshift    # GANDALF-corrected redshift of the galaxy
+		self.u = u				    # u-band magnitude of the galaxy
+		self.r = r				    # r-band magnitude of the galaxy
+		self.Mr = Mr			    # Absolute magnitude of the galaxy
+		self.color = color		    # The "color" of the galaxy as denoted by u-r
+		self.agn = agn		  	    # A flag indicating the galaxy's classification based on AGN
+		self.nearby = nearby        # Number of galaxies "nearby" target galaxy
+								    # (definition of "nearby" changes between data sets)
+		self.nearbyIDs = nearbyIDs  # A list of IDs of nearby galaxies
 
 	@property
 	def objId(self):
@@ -215,3 +216,25 @@ class galaxy:
 			self._nearby = value
 		else:
 			raise TypeError("Attribute 'nearby' must be type int. Got: %s" % (type(value)))
+
+	@property
+	def nearbyIDs(self):
+		r"""
+		Type: list
+
+		List of IDs of "nearby" galaxies
+		(definition of "nearby" changes based on data set)
+		"""
+		return self._nearbyIDs
+
+	@nearbyIDs.setter
+	def nearbyIDs(self, value = []):
+		if isinstance(value, list):
+			if len(value) != 0 and all(isinstance(x, int) for x in value):
+				self._nearbyIDs = value
+			elif len(value) == 0:
+				self._nearbyIDs = value
+			else:
+				raise TypeError("Attribute 'nearbyIDs' must be a list of ints.")
+		else:
+			raise TypeError("Attribute 'nearbyIDs' must be type list. Got %s" % (type(value)))
