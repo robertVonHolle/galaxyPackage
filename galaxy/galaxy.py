@@ -5,12 +5,11 @@ class galaxy:
 	Relevant values for galaxies in the dataset
 	"""
 
-	def __init__(self, objId, ra, dec, z, redshift=0, u=0, r=0, Mr, color, agn, nearby=0, nearbyIDs=[]):
+	def __init__(self, objId, ra, dec, z, Mr, color, agn, u=0., r=0., nearby=0, nearbyIDs=[]):
 		self.objId = objId  	    # Identification number of a galaxy
 		self.ra = ra			    # Right ascension of the galaxy in degrees
 		self.dec = dec			    # Declination of the galaxy in degrees
 		self.z = z				    # Redshift of the galaxy
-		self.redshift = redshift    # GANDALF-corrected redshift of the galaxy
 		self.u = u				    # u-band magnitude of the galaxy
 		self.r = r				    # r-band magnitude of the galaxy
 		self.Mr = Mr			    # Absolute magnitude of the galaxy
@@ -83,22 +82,6 @@ class galaxy:
 			self._z = value
 		else:
 			raise TypeError("Attribute 'z' must be type float. Got: %s" % (type(value)))
-
-	@property
-	def redshift(self):
-		r"""
-		Type: float
-
-		GANDALF-corrected redshift of the galaxy
-		"""
-		return self._redshift
-
-	@redshift.setter
-	def redshift(self, value):
-		if isinstance(value, float):
-			self._redshift = value
-		else:
-			raise TypeError("Attribute 'redshift' must be type float. Got: %s" % (type(value)))
 
 	@property
 	def u(self):
