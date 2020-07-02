@@ -31,12 +31,10 @@ def dataGen(f):
 	else:
 		for i in range(len(data['objID'])):
 			galaxies[int(data['objID'][i])] = galaxy(int(data['objID'][i]), data['ra'][i], data['dec'][i], data['z'][i], 0., 0., data['bpt'][i])
-		print("Dict size:", len(galaxies))
 		keys = set(data['objID'])
-		print("Keys set length:", len(keys))
 		i = 0
 		j = 1
-		onePercent = math.ceil(len(keys) / 1000)
+		onePercent = math.ceil(len(keys) / 100)
 		# iterate through unique object IDs
 		for key in keys:
 			lastID = 0
@@ -59,10 +57,4 @@ def dataGen(f):
 				galaxies[key].nearbyIDs = tempList
 				galaxies[key].nearby = len(tempList)
 
-	j = 0
-	for key in galaxies:
-		if galaxies[key].nearby == 0:
-			j += 1
-	print("Found %s galaxies with no nearby neighbors" % int(j))
-					
 	return galaxies
