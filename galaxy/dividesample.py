@@ -30,6 +30,9 @@ def divideSample(galaxies, f):
 		else:
 			galaxiesRed[key] = galaxies[key]
 
+	print("Red galaxies:", len(galaxiesRed))
+	print("Blue galaxies:", len(galaxiesBlue))
+
 	# Write the blue file
 	blueFile = open(f_blue, 'w')
 	blueFile.write("objID,ra,dec,z,redshift,modelMag_u,modelMag_r,bpt,Column1\n")

@@ -11,4 +11,6 @@ def isBlue(galaxy):
 		isBlue - Type: bool. True if the galaxy is blue, false if the galaxy is red
 	"""
 
-	return galaxy.color < (-0.017 * (galaxy.Mr ** 2)) - (0.146 * galaxy.Mr) + 2.294
+	Mr = galaxy.Mr + 21
+
+	return galaxy.color < (-0.018 * Mr**2) - (0.137 * Mr) + 2.20
