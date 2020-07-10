@@ -16,45 +16,50 @@ def dataGen(f):
 	data = np.genfromtxt(f, dtype=None, delimiter=",", names=True, encoding=None)
 
 	galaxies = {}
-	if 'modelMag_u' in data.dtype.names:  # As of now, this column is always included in datasets not
+	if not 'nearbyID' in data.dtype.names:  # As of now, this column is always included in datasets not
 										  # including object IDs of nearby galaxies and never in
 										  # data sets that do include them
 		# Include number of nearby neighbors if it is present
-		if 'Column1' in data.dtype.names:
-			for i in range(len(data['objID'])):
-				galaxies[int(data['objID'][i])] = galaxy(int(data['objID'][i]), data['ra'][i], data['dec'][i], data['z'][i], 0., 0., data['bpt'][i], u=data['modelMag_u'][i], r=data['modelMag_r'][i], nearby=int(data['Column1'][i]))
-		# Exclude number of nearby neighbors if it is not present
+		if 'modelMag_u' in data.dtype.names:
+			if 'Column1' in data.dtype.names:
+				for i in range(len(data['objID'])):
+					galaxies[int(data['objID'][i])] = galaxy(int(data['objID'][i]), data['ra'][i], data['dec'][i], data['z'][i], 0., 0., data['bpt'][i], u=data['modelMag_u'][i], r=data['modelMag_r'][i], nearby=int(data['Column1'][i]))
+			# Exclude number of nearby neighbors if it is not present
+			else:
+				for i in range(len(data['objID'])):
+					galaxies[int(data['objID'][i])] = galaxy(int(data['objID'][i]), data['ra'][i], data['dec'][i], data['z'][i], 0., 0., data['bpt'][i], u=data['modelMag_u'][i], r=data['modelMag_r'][i])
 		else:
-			for i in range(len(data['objID'])):
-				galaxies[int(data['objID'][i])] = galaxy(int(data['objID'][i]), data['ra'][i], data['dec'][i], data['z'][i], 0., 0., data['bpt'][i], u=data['modelMag_u'][i], r=data['modelMag_r'][i])
+			if 'Column1' in data.dtype.names:
+				for i in range(len(data['objID'])):
+					galaxies[int(data['objID'][i])] = galaxy(int(data['objID'][i]), data['ra'][i], data['dec'][i], data['z'][i], 0., 0., data['bpt'][i],  nearby=int(data['Column1'][i]))
+			# Exclude number of nearby neighbors if it is not present
+			else:
+				for i in range(len(data['objID'])):
+					galaxies[int(data['objID'][i])] = galaxy(int(data['objID'][i]), data['ra'][i], data['dec'][i], data['z'][i], 0., 0., data['bpt'][i])
 	# This works slightly different when we want to get IDs of nearby galaxies
 	else:
-		for i in range(len(data['objID'])):
-			galaxies[int(data['objID'][i])] = galaxy(int(data['objID'][i]), data['ra'][i], data['dec'][i], data['z'][i], 0., 0., data['bpt'][i])
+		usedKeys = []
 		keys = set(data['objID'])
-		i = 0
-		j = 1
-		onePercent = math.ceil(len(keys) / 100)
-		# iterate through unique object IDs
 		for key in keys:
-			lastID = 0
-			# print approximate completion percent because this could take a while
-			if (i % onePercent) == 0 and i != 0:
-				print(j, "% complete")
-				j += 1
-			tempList = []
-			# iterate through whole dataset to gather information from all duplicates of that object
-			while i < len(data['objID']) - 1:
-				i += 1
-				if data['objID'][i] == key:
-					tempList.append(int(data['nearbyID'][i]))
-					lastID == data['objID'][i]
-				elif lastID == key:
-					galaxies[key].nearbyIDs = tempList
-					break
-			else:
-				tempList.append(int(data['nearbyID'][i]))
+			i = np.amin(np.where(data['objID'] == key))
+			galaxies[int(data['objID'][i])] = galaxy(int(data['objID'][i]), data['ra'][i], data['dec'][i], data['z'][i], 0., 0., data['bpt'][i])
+		# iterate through unique object IDs
+		onePercent = math.ceil(len(keys) / 1000)
+		j = 0
+		k = 0
+		for key in keys:
+			if j % onePercent == 0:
+				print(k * 0.1, "% complete")
+				k += 1
+			j += 1
+			if not key in list(usedKeys):
+				tempList = []
+				# iterate through whole dataset to gather information from all duplicates of that object
+				for i in range(len(data['objID'])):
+					if data['objID'][i] == key:
+						tempList.append(int(data['nearbyID'][i]))
 				galaxies[key].nearbyIDs = tempList
 				galaxies[key].nearby = len(tempList)
+				usedKeys = usedKeys + tempList
 
 	return galaxies
