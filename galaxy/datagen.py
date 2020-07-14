@@ -38,28 +38,21 @@ def dataGen(f):
 					galaxies[int(data['objID'][i])] = galaxy(int(data['objID'][i]), data['ra'][i], data['dec'][i], data['z'][i], 0., 0., data['bpt'][i])
 	# This works slightly different when we want to get IDs of nearby galaxies
 	else:
-		usedKeys = []
-		keys = set(data['objID'])
-		for key in keys:
-			i = np.amin(np.where(data['objID'] == key))
-			galaxies[int(data['objID'][i])] = galaxy(int(data['objID'][i]), data['ra'][i], data['dec'][i], data['z'][i], 0., 0., data['bpt'][i])
-		# iterate through unique object IDs
-		onePercent = math.ceil(len(keys) / 1000)
-		j = 0
-		k = 0
-		for key in keys:
-			if j % onePercent == 0:
-				print(k * 0.1, "% complete")
-				k += 1
-			j += 1
-			if not key in list(usedKeys):
-				tempList = []
-				# iterate through whole dataset to gather information from all duplicates of that object
-				for i in range(len(data['objID'])):
-					if data['objID'][i] == key:
-						tempList.append(int(data['nearbyID'][i]))
-				galaxies[key].nearbyIDs = tempList
-				galaxies[key].nearby = len(tempList)
-				usedKeys = usedKeys + tempList
+		onePercent = math.ceil(len(data['objID']) / 100)  # Find what is approximately 1% completion
+		j = 0  # Completion tracker
+		for i in range(len(data['objID'])):  # Iterate through every row in data table
+			if i % onePercent == 0:  # Check if it's time to update completion percentage
+				print(j, "% complete")  # Update completion percentage
+				j += 1  # Iterate completion tracker
+			if int(data['objID'][i]) in galaxies:  # Check if I already have data for this target galaxy
+				if data['nearbyID'][i] in data['objID']:  # Check if I have data on this nearby galaxy in my data table
+					galaxies[int(data['objID'][i])].nearbyIDs.append(int(data['nearbyID'][i]))  # Add this nearby galaxy to list of galaxies nearby target
+			else:  # If I don't already have data on this target galaxy...
+				galaxies[int(data['objID'][i])] = galaxy(int(data['objID'][i]), data['ra'][i], data['dec'][i], data['z'][i], 0., 0., data['bpt'][i], nearby=0)  # Grab all data from this row
+				if data['nearbyID'][i] in data['objID']:  # Check if I have data on this nearby galaxy in my data table
+					galaxies[int(data['objID'][i])].nearbyIDs.append(int(data['nearbyID'][i]))  # Add this nearby galaxy to list of galaxies nearby target
+
+		for key in galaxies:  # Iterate through dictionary of galaxies
+			galaxies[key].nearby = len(galaxies[key].nearbyIDs)  # Set number of nearby neighbors as length of list of nearby neighbors
 
 	return galaxies
