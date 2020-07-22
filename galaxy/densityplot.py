@@ -30,8 +30,9 @@ def densityPlot(galaxies, f, xlim=None, ylim=None):
 	# Create the 2d histogram
 	plt.hist2d(color, Mr, bins=250, norm=LogNorm(), cmin=1, cmap=plt.cm.inferno)
 	plt.gca().invert_yaxis()
-	plt.xlabel("u - r")
-	plt.ylabel("Absolute Magnitude")
+	plt.title("Color vs. Absolute Magnitude", fontsize=14)
+	plt.xlabel("Color (u - r)", fontsize=14)
+	plt.ylabel("Absolute Magnitude", fontsize=14)
 
 	# Implement plot limits if requested by user
 	if xlim != None:

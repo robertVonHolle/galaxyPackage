@@ -77,7 +77,7 @@ def nearbyHist(galaxies, f, dist, bins=10, makeNearbyFile=False):
 		for key in galaxies:
 			if galaxies[key].nearby >= 11:
 				numTot += 1
-				if galaxies[kye].agn != 0:
+				if galaxies[key].agn != 0:
 					numAGN += 1
 		if numTot != 0:
 			binHeights.append(numAGN / numTot)
@@ -95,8 +95,9 @@ def nearbyHist(galaxies, f, dist, bins=10, makeNearbyFile=False):
 
 	# Plot the histogram
 	plt.bar(binsList, binHeights, yerr = errs)
-	plt.xlabel("Number of galaxies within distance of 0.1 Mpc of target")
-	plt.ylabel("Fraction of targets with AGNs")
+	plt.title("Nearby Neighbors vs. AGN Probability",fontsize=14)
+	plt.xlabel("Number of galaxies within distance of 0.5 Mpc of target",fontsize=14)
+	plt.ylabel("Fraction of targets containing AGN",fontsize=14)
 	plt.savefig(f)
 	print("Created histogram")
 	plt.clf()
