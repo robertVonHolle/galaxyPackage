@@ -71,4 +71,4 @@ def dataGen(f):
 		for key in galaxies:  # Iterate through dictionary of galaxies
 			galaxies[key].nearby = len(galaxies[key].nearbyIDs)  # Set number of nearby neighbors as length of list of nearby neighbors
 
-	return {'data':data, 'galaxies':galaxies}
+	return galaxies
