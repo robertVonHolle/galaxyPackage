@@ -59,10 +59,7 @@ def dataGen(f):
 					galaxies[objid] = galaxy(objid, data['ra'][i], data['dec'][i], data['z'][i], 0., 0., data['bpt'][i])
 			elif not objid in galaxies:
 				galaxies[objid] = galaxy(objid, data['ra'][i], data['dec'][i], data['z'][i], 0., 0., data['bpt'][i])
-			if data['objID'][i] == len(data['objID']) - 1:
-				galaxies[objid].nearbyIDs = nearby_gals
-				nearby_gals = []
-			elif data['objID'][i] != data['objID'][i+1]:
+			if i >= len(data['objID']) - 1 or data['objID'][i] != data['objID'][i+1]:
 				galaxies[objid].nearbyIDs = nearby_gals
 				nearby_gals = []
 			bar.update()

@@ -4,7 +4,7 @@ import math
 from astropy.utils.console import ProgressBar
 from galaxy.galaxy import galaxy
 
-def dataGen(f):
+def dataGen2(f):
 	r"""
 	Generates a dictionary of galaxy objects from a file
 

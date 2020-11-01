@@ -83,14 +83,14 @@ def pairTypes(galaxies, f):
 					blueAGN += 1
 				else:
 					redAGN += 1
-			else
+			else:
 				if isBlue(galaxies[item[1]]):
 					blueAGN += 1
 				else:
 					redAGN += 1
 	
 	logFile.write("Of these red/blue pairs, %s\% have at least one AGN\n" % (100 * (agnCount1 / len(redBlue))))
-	logFile.write("Of these red/blue pairs, %s\% have exactly one AGN\n" % (100 * ((agnCount1 - agnCount2)) / len(redBlue))))
+	logFile.write("Of these red/blue pairs, %s\% have exactly one AGN\n" % (100 * ((agnCount1 - agnCount2)) / len(redBlue)))
 	logFile.write("Of these red/blue pairs with exactly one AGN, the AGN is in the red galaxy for %s\% of pairs\n" % (100 * redAGN / (agnCount1 - agnCount2)))
 	logFile.write("Of these red/blue pairs with exactly one AGN, the AGN is in the blue galaxy for %s\% of pairs\n" % (100 * blueAGN / (agnCount1 - agnCount2)))
-	logFile.write("Of these red/blue pairs, %s\% have two AGNs\n" % (100 * (agnCount2 / len(redBlue)))
+	logFile.write("Of these red/blue pairs, %s\% have two AGNs\n" % (100 * (agnCount2 / len(redBlue))))

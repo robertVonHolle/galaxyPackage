@@ -1,4 +1,5 @@
 from math import log10
+from json import JSONEncoder
 
 class galaxy:
 	r"""
@@ -221,3 +222,9 @@ class galaxy:
 				raise TypeError("Attribute 'nearbyIDs' must be a list of ints.")
 		else:
 			raise TypeError("Attribute 'nearbyIDs' must be type list. Got %s" % (type(value)))
+
+	def to_json(self): 
+		r''' 
+		convert the instance of this class to json 
+		'''
+		return json.dumps(self, indent = 4, default=lambda o: o.__dict__) 
