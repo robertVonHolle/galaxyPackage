@@ -2,6 +2,7 @@ from galaxy import galaxy
 import matplotlib.pyplot as plt
 from matplotlib.colors import LogNorm
 import time
+import numpy as np
 
 def densityPlot(galaxies, f, xlim=None, ylim=None):
 	r"""
@@ -26,6 +27,10 @@ def densityPlot(galaxies, f, xlim=None, ylim=None):
 		if galaxy.u > errFlag:
 			color.append(galaxy.color)
 			Mr.append(galaxy.Mr)
+
+	Mr_div = np.linspace(min(Mr), max(Mr), 1000)
+	Mr_21 = Mr_div + 21
+	color_div = -0.018*(Mr_21**2) - 0.137*Mr_21 + 2.20
 
 	# Create the 2d histogram
 	plt.hist2d(color, Mr, bins=250, norm=LogNorm(), cmin=1, cmap=plt.cm.inferno)
@@ -54,6 +59,7 @@ def densityPlot(galaxies, f, xlim=None, ylim=None):
 			raise TypeError("Argument 'ylim' must be a list of length 2. Got: %s" % (type(ylim)))
 	
 	plt.colorbar()
+	plt.plot(color_div, Mr_div)
 	plt.savefig(f)
 	print("Created galaxy plot")
 	plt.clf()
